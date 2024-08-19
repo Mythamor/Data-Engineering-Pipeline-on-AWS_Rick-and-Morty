@@ -1,6 +1,6 @@
 # Data-Engineering-Pipeline-on-AWS: Rick-and-Morty-API
 
-This project is a data engineering pipeline that extracts data from the Rick and Morty API, "https://rickandmortyapi.com/api/", processes it, and loads the results into individual CSV files. These files are then stored in an AWS S3 bucket for further analysis or use.
+This project is a data engineering pipeline that extracts data from the Rick and Morty API https://rickandmortyapi.com/api/, processes it, and loads the results into individual CSV files. These files are then stored in an AWS S3 bucket for further analysis or use.
 
 ## Features
 
