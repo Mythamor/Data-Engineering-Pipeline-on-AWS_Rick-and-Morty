@@ -13,9 +13,9 @@ This project is a data engineering pipeline that extracts data from the Rick and
 The pipeline interacts with the following Rick and Morty API endpoints:
 
 1. **Characters**: https://rickandmortyapi.com/api/character
-2.                 Contains information about characters in the Rick and Morty universe.
+                   Contains information about characters in the Rick and Morty universe.
 3. **Episodes**:   https://rickandmortyapi.com/api/episode
-4.                 Contains details about episodes, including their titles, air dates, and characters involved.
+                   Contains details about episodes, including their titles, air dates, and characters involved.
 5. **Locations**:  https://rickandmortyapi.com/api/location
                    Provides data on various Rick and Morty universe locations, including their type and dimension.
 
