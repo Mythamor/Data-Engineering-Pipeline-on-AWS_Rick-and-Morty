@@ -82,6 +82,5 @@ The pipeline interacts with the following Rick and Morty API endpoints:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
-This README outlines the purpose, setup, and usage of your data engineering pipeline, making it clear and informative for users and collaborators.
+## Author
+Mithamo Beth
