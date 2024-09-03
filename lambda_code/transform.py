@@ -2,12 +2,11 @@ import json
 import pandas as pd
 import boto3
 import ast
-import os
 from io import StringIO
 from utils import s3_file_operations as s3_ops
 
 def lambda_handler(event, context):
-    bucket =  os.getenv("BUCKET") # S3 bucket name
+    bucket = "rick-and-morty-de"  # S3 bucket name
 
     # Read data from S3
     print("Reading Character data from S3...")
