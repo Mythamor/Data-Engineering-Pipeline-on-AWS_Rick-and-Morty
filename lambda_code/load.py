@@ -20,7 +20,7 @@ def create_database():
     print("Reading transformed data from S3...")
     characters_df = s3_ops.read_csv_from_s3(bucket_name, 'Rick&Morty/Transformed/Character.csv')
     episodes_df = s3_ops.read_csv_from_s3(bucket_name, 'Rick&Morty/Transformed/Episode.csv')
-    #appearance_df = s3_ops.read_csv_from_s3(bucket_name, 'Rick&Morty/Transformed/Appearance.csv')
+    appearance_df = s3_ops.read_csv_from_s3(bucket_name, 'Rick&Morty/Transformed/Appearance.csv')
     location_df = s3_ops.read_csv_from_s3(bucket_name, 'Rick&Morty/Transformed/Location.csv')
 
     # Check if data is loaded successfully
@@ -64,7 +64,7 @@ def create_database():
         ) ENGINE=INNODB;
     """
 
-    """ create_appearance_table =
+    create_appearance_table = """
         CREATE TABLE IF NOT EXISTS Appearance_Table (
             id INT NOT NULL PRIMARY KEY,
             episode_id INT,
@@ -145,6 +145,13 @@ def insert_data(cursor, conn, df, table_name):
         data = tuple(row[column] for column in column_names)
         cursor.execute(sql_insert, data)
         conn.commit()
+
+        
+    def get_table_columns(cursor, table_name):
+        cursor.execute(f"SHOW COLUMNS FROM {table_name};")
+        columns = [column['Field'] for column in cursor.fetchall()]
+        return columns
+
 
 
 # Call the function to create the database
