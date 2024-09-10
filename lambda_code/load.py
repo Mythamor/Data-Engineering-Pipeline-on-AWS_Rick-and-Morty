@@ -2,11 +2,16 @@ import os
 import json
 import boto3
 import pandas as pd
+import numpy as np
 import pymysql.cursors
 import s3_file_operations as s3_ops
+from dotenv import load_dotenv
 
+
+load_dotenv(override=True)
 
 # Define environmental variables
+"""
 HOST = os.getenv("HOST")
 USER = os.getenv("USER")
 PASSWORD = os.getenv("PASSWORD")
@@ -14,6 +19,10 @@ DATABASE = os.getenv("DATABASE")
 PORT = os.getenv("PORT")
 
 bucket_name = os.getenv("BUCKET")
+"""
+# AWS Bucket
+bucket_name="rick-and-morty-de"
+
 
 def create_database():
     # Read transformed data from S3
@@ -34,7 +43,7 @@ def create_database():
     print("Data loaded successfully from S3")
 
     # SQL to drop the table if it exists
-    drop_table = "DROP TABLE IF EXISTS Characters, Episodes, Location CASCADE"
+    drop_table = "DROP TABLE IF EXISTS Characters, Episodes, Location, Appearance CASCADE"
     
     # SQL create table scripts
     create_character_table = """
@@ -49,7 +58,7 @@ def create_database():
             location_id VARCHAR(255),
             image VARCHAR(255),
             url VARCHAR(255),
-            created TIMESTAMP
+            created VARCHAR(255)
         ) ENGINE=INNODB;
     """
 
@@ -60,12 +69,12 @@ def create_database():
             air_date VARCHAR(255),
             episode VARCHAR(255),
             url VARCHAR(255),
-            created TIMESTAMP
+            created VARCHAR(255)
         ) ENGINE=INNODB;
     """
 
     create_appearance_table = """
-        CREATE TABLE IF NOT EXISTS Appearance_Table (
+        CREATE TABLE IF NOT EXISTS Appearance (
             id INT NOT NULL PRIMARY KEY,
             episode_id INT,
             character_id INT
@@ -79,7 +88,7 @@ def create_database():
             type VARCHAR(255),
             dimension VARCHAR(255),
             url VARCHAR(255),
-            created TIMESTAMP
+            created VARCHAR(255)
         ) ENGINE=INNODB;
     """
 
@@ -101,7 +110,7 @@ def create_database():
         # Create tables
         cursor.execute(create_character_table)
         cursor.execute(create_episode_table)
-        #cursor.execute(create_appearance_table)
+        cursor.execute(create_appearance_table)
         cursor.execute(create_location_table)
 
         # Insert data into Character_Table
@@ -111,7 +120,7 @@ def create_database():
         insert_data(cursor, conn, episodes_df, "Episodes")
 
         # Insert data into Appearance_Table
-        #insert_data(cursor, conn, appearance_df, "Appearance_Table")
+        insert_data(cursor, conn, appearance_df, "Appearance")
 
         # Insert data into Location_Table
         insert_data(cursor, conn, location_df, "Location")
@@ -129,10 +138,16 @@ def create_database():
         'statusCode': 200,
         'body': json.dumps('Data transformation and upload successful')
     }
+    
+def get_table_columns(cursor, table_name):
+        cursor.execute(f"SHOW COLUMNS FROM {table_name};")
+        columns = [column['Field'] for column in cursor.fetchall()]
+        return columns
+
 
 def insert_data(cursor, conn, df, table_name):
-    # Replace NaN values with None
-    df = df.where(pd.notnull(df), None)
+    # Replace NaN values with None explicitly
+    df = df.replace({np.nan: None})
     
     # Filter DataFrame columns to match the table schema
     table_columns = get_table_columns(cursor, table_name)  # You need to define this function
@@ -145,12 +160,6 @@ def insert_data(cursor, conn, df, table_name):
         data = tuple(row[column] for column in column_names)
         cursor.execute(sql_insert, data)
         conn.commit()
-
-        
-    def get_table_columns(cursor, table_name):
-        cursor.execute(f"SHOW COLUMNS FROM {table_name};")
-        columns = [column['Field'] for column in cursor.fetchall()]
-        return columns
 
 
 

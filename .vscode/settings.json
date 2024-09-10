@@ -1,0 +1,44 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "FirstSQL",
+            "database": "school",
+            "username": "betty"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 16148,
+            "driver": "MySQL",
+            "name": "data engineering",
+            "database": "defaultdb",
+            "username": "avnadmin",
+            "group": "rick-and-morty-rick-and-morty-de.j.aivencloud.com"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "rick-and-morty-rick-and-morty-de.j.aivencloud.com",
+            "port": 16148,
+            "driver": "MySQL",
+            "database": "defaultdb",
+            "username": "avnadmin",
+            "name": "data engineering"
+        }
+    ]
+}

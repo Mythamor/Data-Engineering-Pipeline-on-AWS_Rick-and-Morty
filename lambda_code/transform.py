@@ -57,9 +57,20 @@ def lambda_handler(event, context):
 
     expanded_df = appearance_df.explode('character_ids')
     expanded_df = expanded_df.reset_index(drop=True).reset_index().rename(columns={'index': 'id'})
-    expanded_df = expanded_df.rename(columns={'id': 'id', 'id': 'episode_id', 'character_ids': 'character_id'})
-    expanded_df = expanded_df[['id', 'episode_id', 'character_id']]
+    
+    # Get current column names
+    columns = list(expanded_df.columns)
 
+    # Replace based on index position
+    columns[0] = 'id'            # Rename the first column (index 0)
+    columns[1] = 'episode_id'     # Rename the second column (index 1)
+
+    # Reassign new column names back to the dataframe
+    expanded_df.columns = columns
+
+    # Now rename any remaining columns by name
+    expanded_df = expanded_df.rename(columns={'character_ids': 'character_id'})
+    
     # Episodes DataFrame transformation
     episodes_df = episodes_df.drop("characters", axis=1)
 
